@@ -16,7 +16,7 @@ Maven
 docker e docker-compose
 ```
 
-### Installing
+### Instalando
 
 Passo a passo para executar a aplicação localmente
 
@@ -49,7 +49,7 @@ mvn package
 java -jar ./target/star-wars-game-1.0.0.jar
 ```
 
-## Running the tests
+## Executando os testes
 
 Para executar os testes somente é necessário
 
