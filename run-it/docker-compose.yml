@@ -16,3 +16,4 @@ services:
       MYSQL_DATABASE: "starwarsdb"
     volumes:
       - /storage/docker/mysql-datadir:/var/lib/mysql
+      - /storage/mysql_init:/docker-entrypoint-initdb.d
