@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    container_name: starwars-mysql-cntnr
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    environment:
+      MYSQL_USER: 'starwarsusr'
+      MYSQL_PASSWORD: 'starwarspwd'
+      MYSQL_ROOT_PASSWORD: "game-starwarspwd"
+      MYSQL_DATABASE: "starwarsdb"
+    volumes:
+      - /storage/docker/mysql-datadir:/var/lib/mysql
+      - /storage/mysql_init:/docker-entrypoint-initdb.d
