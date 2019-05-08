@@ -1,4 +1,4 @@
-package br.com.ame.game.service;
+package br.com.ame.game.controller;
 
 import static br.com.ame.game.mother.PlanetContentMother.PLANET_CONTENT_ALDERAAN;
 import static br.com.ame.game.mother.PlanetContentMother.PLANET_CONTENT_TATOOINE;
@@ -6,16 +6,15 @@ import static br.com.ame.game.mother.SWPlanetMother.SWLIST_ONE_PLANET;
 import static br.com.ame.game.mother.SWPlanetMother.SWLIST_TWO_PLANETS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.runners.MethodSorters.NAME_ASCENDING;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-import br.com.ame.game.controller.PlanetController;
 import br.com.ame.game.domain.ErrorResponse;
 import br.com.ame.game.domain.PlanetContent;
 import br.com.ame.game.gateway.domain.SWList;
 import br.com.ame.game.gateway.domain.SWPlanet;
-import br.com.ame.game.mother.SWPlanetMother;
-import org.junit.Assert;
+import br.com.ame.game.service.PlanetService;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,7 +32,7 @@ import reactor.core.publisher.Mono;
 @RunWith(SpringRunner.class)
 @WebFluxTest(PlanetController.class)
 @FixMethodOrder(NAME_ASCENDING)
-public class PlanetServiceImplReactTest {
+public class PlanetControllerReactTest {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -184,5 +183,22 @@ public class PlanetServiceImplReactTest {
                 .expectStatus().isOk()
                 .expectBody(new ParameterizedTypeReference<SWList<SWPlanet>>(){})
                 .isEqualTo(SWLIST_TWO_PLANETS);
+    }
+
+    @Test
+    public void testCreate() {
+        PlanetContent planetContent = PLANET_CONTENT_TATOOINE;
+        planetContent.setId(1L);
+
+        when(planetService.saveBlock(any(PlanetContent.class))).thenReturn(Mono.just(planetContent));
+
+        webTestClient.post()
+                .uri("/planets")
+                .syncBody(PLANET_CONTENT_TATOOINE)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(PlanetContent.class)
+                .isEqualTo(planetContent);
     }
 }

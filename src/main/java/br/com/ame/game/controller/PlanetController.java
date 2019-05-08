@@ -35,12 +35,6 @@ public class PlanetController {
 
     @PostMapping("/planets")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Planet> create(@Valid @RequestBody Mono<PlanetContent> planetContent) {
-        return planetService.save(planetContent);
-    }
-
-    @PostMapping("/planets/block")
-    @ResponseStatus(HttpStatus.CREATED)
     public Mono<PlanetContent> create(@Valid @RequestBody PlanetContent planetContent) {
         return planetService.saveBlock(planetContent);
     }
